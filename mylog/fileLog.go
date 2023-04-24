@@ -76,13 +76,14 @@ func (f *fileLogger) log(level logLevel, format string, a ...interface{}) {
 		if sw_split {
 			f.fileObj = f.splitFile(f.fileObj)
 		}
-		fmt.Fprintf(f.fileObj, "[%s] [%s] %s %s\n", unTransLevel(level), getTime(), getCaller(), msg)
+		fileName, funcName, lineNo := getCaller()
+		fmt.Fprintf(f.fileObj, "[%s] [%s] %s:%s:%d %s\n", unTransLevel(level), getTime(), fileName, funcName, lineNo, msg)
 		if level >= ErrorLevel {
 			sw_errSplit := f.checkSize(f.errFileObj)
 			if sw_errSplit {
 				f.errFileObj = f.splitFile(f.errFileObj)
 			}
-			fmt.Fprintf(f.errFileObj, "[%s] [%s] %s %s\n", unTransLevel(level), getTime(), getCaller(), msg)
+			fmt.Fprintf(f.errFileObj, "[%s] [%s] %s:%s:%d %s\n", unTransLevel(level), getTime(), fileName, funcName, lineNo, msg)
 		}
 	}
 }
