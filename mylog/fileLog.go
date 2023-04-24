@@ -4,115 +4,136 @@ import (
 	"fmt"
 	"os"
 	"path"
-	"strings"
 	"time"
 )
 
-func NewFileLogger(levelStr, fpath, fname string, maxSize int64) *fileLogger {
-	tempStr := strings.ToLower(levelStr)
-	n := transLevel(tempStr)
+//向文件中写日志
+type FileLogger struct {
+	level       string
+	filePath    string
+	fileName    string
+	fileObj     *os.File
+	errFileObj  *os.File
+	maxFileSize int64
+}
 
-	if !strings.HasSuffix(fname, ".log") {
-		fname = fname + ".log"
-	}
-
-	filepath := path.Join(fpath, fname)
-	fileObj, err := os.OpenFile(filepath, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
-	if err != nil {
-		fmt.Printf("Open log file faild, err=%v\n", err)
-		panic(err)
-	}
-	errfileObj, err := os.OpenFile(filepath+".err", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
-	if err != nil {
-		fmt.Printf("Open err log file faild, err=%v\n", err)
-		panic(err)
-	}
-
-	return &fileLogger{
-		level:       n,
-		filePath:    fpath,
-		fileName:    fname,
-		fileObj:     fileObj,
-		errFileObj:  errfileObj,
+func NewFileLoger(levelString, fp, fn string, maxSize int64) *FileLogger {
+	f := &FileLogger{
+		level:       levelString,
+		filePath:    fp,
+		fileName:    fn,
 		maxFileSize: maxSize,
 	}
+	err := f.initFile()
+	if err != nil {
+		panic(err)
+	}
+	return f
 }
 
-func (f *fileLogger) enable(mylevel logLevel) bool {
-	return f.level <= mylevel
+func (f *FileLogger) initFile() error {
+	fullFilename := path.Join(f.filePath, f.fileName)
+	fp, err := os.OpenFile(fullFilename, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		fmt.Printf("open log file failed, err=%v\n", err)
+		return err
+	}
+	f.fileObj = fp
+	ferrp, err := os.OpenFile(fullFilename+".err", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		fmt.Printf("open err log file failed, err=%v\n", err)
+		return err
+	}
+	f.errFileObj = ferrp
+	return nil
 }
 
-func (f *fileLogger) checkSize(fp *os.File) bool {
+func (f *FileLogger) checkSize(fp *os.File) bool {
 	fileInfo, err := fp.Stat()
 	if err != nil {
-		fmt.Printf("Obtain log file state faild, err=%v\n", err)
-		panic(err)
+		fmt.Printf("get file info failed, err=%v\n", err)
+		return false
 	}
-	if fileInfo.Size() > f.maxFileSize {
-		return true
-	}
-	return false
+	return fileInfo.Size() >= f.maxFileSize
 }
 
-func (f *fileLogger) splitFile(fp *os.File) (nFp *os.File) {
-	fileInfo, _ := fp.Stat()
-	fileName := fileInfo.Name()
-	oldFileName := path.Join(f.filePath, fileName)
-	nowStr := time.Now().Format("20060102150405.000")
-	fp.Close()
-	os.Rename(oldFileName, oldFileName+"-"+nowStr+".bak")
-	nFp, err := os.OpenFile(oldFileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		fmt.Printf("Split - Create new file faild, err=%v\n", err)
-		panic(err)
-	}
-	return nFp
-}
-
-func (f *fileLogger) log(level logLevel, format string, a ...interface{}) {
-	if f.enable(level) {
+func (f *FileLogger) log(lv logLevel, format string, a ...interface{}) {
+	if f.enable(lv) {
 		msg := fmt.Sprintf(format, a...)
-		sw_split := f.checkSize(f.fileObj)
-		if sw_split {
-			f.fileObj = f.splitFile(f.fileObj)
+		now := time.Now().Format("2006-01-02 15.04.05.000")
+		funcName, fileName, lineNo := getInfo(3)
+		fmt.Fprintf(f.fileObj, "[%s] [%s] [%s:%s:%d] %s\n", now, parseLevelToString(lv), fileName, funcName, lineNo, msg)
+		if lv >= ERROR {
+			fmt.Fprintf(f.errFileObj, "[%s] [%s] [%s:%s:%d] %s\n", now, parseLevelToString(lv), fileName, funcName, lineNo, msg)
 		}
-		fileName, funcName, lineNo := getCaller()
-		fmt.Fprintf(f.fileObj, "[%s] [%s] %s:%s:%d %s\n", unTransLevel(level), getTime(), fileName, funcName, lineNo, msg)
-		if level >= ErrorLevel {
-			sw_errSplit := f.checkSize(f.errFileObj)
-			if sw_errSplit {
-				f.errFileObj = f.splitFile(f.errFileObj)
+		if f.checkSize(f.fileObj) {
+			f.fileObj.Close()
+			fullFilename := path.Join(f.filePath, f.fileName)
+			err := os.Rename(fullFilename, fullFilename+"."+now+".bak")
+			if err != nil {
+				fmt.Printf("rename log file to bak file failed, err=%v\n", err)
+				return
 			}
-			fmt.Fprintf(f.errFileObj, "[%s] [%s] %s:%s:%d %s\n", unTransLevel(level), getTime(), fileName, funcName, lineNo, msg)
+			fp, err := os.OpenFile(fullFilename, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+			if err != nil {
+				fmt.Printf("open log file failed, err=%v\n", err)
+				return
+			}
+			f.fileObj = fp
+
+			if f.checkSize(f.errFileObj) {
+				f.errFileObj.Close()
+				err = os.Rename(fullFilename+".err", fullFilename+".err"+now+".bak")
+				if err != nil {
+					fmt.Printf("rename err log file to bak file failed, err=%v\n", err)
+					return
+				}
+				ferrp, err := os.OpenFile(fullFilename+".err", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+				if err != nil {
+					fmt.Printf("open err log file failed, err=%v\n", err)
+					return
+				}
+				f.errFileObj = ferrp
+			}
 		}
 	}
 }
 
-func (f *fileLogger) Debug(s string, a ...interface{}) {
-	f.log(DebugLevel, s, a...)
+func (f *FileLogger) enable(lv logLevel) bool {
+	fl, err := parseString(f.level)
+	if err != nil {
+		fmt.Printf("parse file level from string to int64 failed, err=%v\n", err)
+		return false
+	}
+	return fl <= lv
 }
 
-func (f *fileLogger) Info(s string, a ...interface{}) {
-	f.log(InfoLevel, s, a...)
+// Debug 函数
+func (f *FileLogger) Debug(s string) {
+	f.log(DEBUG, "debug")
 }
 
-func (f *fileLogger) Trace(s string, a ...interface{}) {
-	f.log(TraceLevel, s, a...)
+// Info 函数
+func (f *FileLogger) Info(s string) {
+	f.log(INFO, "debug")
 }
 
-func (f *fileLogger) Warning(s string, a ...interface{}) {
-	f.log(WarningLevel, s, a...)
+// Trace 函数
+func (f *FileLogger) Trace(s string) {
+	f.log(TRACE, "debug")
 }
 
-func (f *fileLogger) Error(s string, a ...interface{}) {
-	f.log(ErrorLevel, s, a...)
+// Warning 函数
+func (f *FileLogger) Warning(s string) {
+	f.log(WARNING, "debug")
 }
 
-func (f *fileLogger) Fatal(s string, a ...interface{}) {
-	f.log(FatalLevel, s, a...)
+// Error 函数
+func (f *FileLogger) Error(s string) {
+	f.log(ERROR, "debug")
 }
 
-func (f *fileLogger) Close() {
-	f.fileObj.Close()
-	f.errFileObj.Close()
+// Fatal 函数
+func (f *FileLogger) Fatal(s string) {
+	f.log(FATAL, "debug")
 }
