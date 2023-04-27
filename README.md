@@ -19,4 +19,6 @@ demos
   
   udp
   
+  http
+  
 ### UT
