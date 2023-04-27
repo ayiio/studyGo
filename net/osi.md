@@ -35,3 +35,6 @@ TCP数据传递是流模式，在保持连接时可以进行多次收发。
 
 ## UDP
 UDP(User Datagram Protocol)-用户数据报协议，是OSI(Open System Interconnection 开放式系统互联)参考模型中一种无连接的传输协议，不需要建立连接直接进行数据收发，属于不可靠、没有时序的通信，但实时性好，广泛用于视频直播领域。
+
+## HTTP
+超文本传输协议(HTTP, HyperText Transfer Protocol)-互联网传输协议，是WWW所遵循的标准。最初目的是提供收发HTML的方法。
