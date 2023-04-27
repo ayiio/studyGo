@@ -38,3 +38,11 @@ UDP(User Datagram Protocol)-用户数据报协议，是OSI(Open System Interconn
 
 ## HTTP
 超文本传输协议(HTTP, HyperText Transfer Protocol)-互联网传输协议，是WWW所遵循的标准。最初目的是提供收发HTML的方法。
+
+HTML:超文本标记语言，标记的符号/标签
+
+CSS:层叠样式表，标签的具体样式(颜色，背景，大小，位置等)
+
+JavaScript:前端程式语言
+
+
