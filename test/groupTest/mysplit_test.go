@@ -55,6 +55,6 @@ func Test2Split(t *testing.T) {
 }
 
 // 测试覆盖率: go test -cover
-// 结果输出到文件: go tool cover -coverprofile=c.out
-// coverproflie: html/mode/o/var
+// 结果输出到文件: go test -cover -coverprofile=c.out
+// 以html[mode|o|var]方式打开报告: go tool cover -html=c.out
 // 测试函数覆盖率要满足100%, 实际测试代码覆盖率一般要大于60%(iferr判断不能满足完全覆盖)
