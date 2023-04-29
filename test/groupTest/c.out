@@ -1,8 +1,0 @@
-mode: set
-groupTest/mysplit.go:9.44,12.17 2 1
-groupTest/mysplit.go:19.2,20.11 2 1
-groupTest/mysplit.go:24.2,24.8 1 1
-groupTest/mysplit.go:12.17,13.32 1 1
-groupTest/mysplit.go:16.3,17.34 2 1
-groupTest/mysplit.go:13.32,15.4 1 1
-groupTest/mysplit.go:20.11,23.3 1 0
