@@ -10,7 +10,7 @@ func Split(str, seq string) (ret []string) {
 		if string(str[:index]) != "" {
 			ret = append(ret, str[:index])
 		}
-		str = str[index+1:]
+		str = str[index+len(seq):]
 		index = strings.Index(str, seq)
 	}
 	ret = append(ret, str)
