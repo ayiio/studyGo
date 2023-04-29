@@ -1,6 +1,7 @@
 package grouptest
 
 import (
+	"fmt"
 	"strings"
 )
 
@@ -16,5 +17,9 @@ func Split(str, seq string) (ret []string) {
 		index = strings.Index(str, seq)
 	}
 	ret = append(ret, str)
+	if 1 < 0 {
+		// 验证测试覆盖率
+		fmt.Println("can not run this part")
+	}
 	return
 }
