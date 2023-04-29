@@ -24,4 +24,4 @@ demos
 ### test
   unit_test
   
-  test_group
+  group_test
