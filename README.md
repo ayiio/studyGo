@@ -27,3 +27,5 @@ demos
   group_test
   
   bench_test
+  
+  pprof
