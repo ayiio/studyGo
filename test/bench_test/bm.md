@@ -9,3 +9,5 @@
 并行测试，`func (b *B) RunParallel(body func(*PB))`会以并行的方式执行给定的基准测试。 `RunParallel`会创建出多个`goroutine(默认GOMAXPROCS)`，并将`b.N`分配给这些`goroutine`执行。如果需要增加非CPU受限(non-CPU-bound)基准测试的并行性，可以在`RunParallel`之前调用`SetParallelism`，`RunParallel`通常会和`-cpu`标志一起使用。
 
 Setup和TearDown，测试准备和测试后恢复(如数据库插入+删除操作)。通常在`*_test.go`中定义`TestMain`函数，进而在测试之前进行额外的设置`setup`或在测试之后进行拆卸`teardown`操作。如果在测试文件中写入函数`func TestMain(m *testing.M)`，那么测试将先调用`TestMain(m)`，然后再运行具体的测试。`TestMain`运行在主`goroutine`中，可以在调用`m.Run`前后做任何`setup`或`teardown`，退出测试时应使用`m.Run`的返回值作为参数调用`os.Exit`。
+
+示例函数，以`Example`为前缀，无参数无返回值。示例函数能够作为文档直接使用，例如基于web的godoc。示例函数只要包含了`// Output:`也是可以通过`go test`执行测试。
