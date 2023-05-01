@@ -25,3 +25,5 @@ demos
   unit_test
   
   group_test
+  
+  bench_test
