@@ -28,5 +28,25 @@ pprof开启后，每隔一段时间(10ms)就会收集当前的堆栈信息，获
 
 应用程序执行结束后会生成保存有CPU使用情况的文件，使用`go tool pprof`工具进行CPU性能分析。
 
+#### 内存性能分析
+记录堆栈信息：`pprof.WriteHeapProfile(w io.Writer)`
+
+得到采样数据后，使用`go tool pprof`工具进行内存性能分析。默认使用`-inuse_space`进行统计，还可以使用`-inuse-objects`查看分配对象的数量。
+
+### 服务型应用
+持续运行的程序，例如web应用，如果使用默认的`http.DefaultServeMux`(直接使用`http.ListenAndServe("0.0.0.0:8080", nil)`)，只需要在web server端代码中引入`net/http/pprof`：`import _ "net/http/pprof"`。
+
+如果使用自定义Mux，需要手动注册一些路由规则：
+```go
+r.HandleFunc("/debug/pprof/", pprof.Index)
+r.HandleFunc("/debug/pprof/cmdline", pprof.Cmdline)
+r.HandleFunc("/debug/pprof/profile", pprof.Profile)
+r.HandleFunc("/debug/pprof/symbol", pprof.Symbol)
+r.HandleFunc("/debug/pprof/trace", pprof.Trace)
+```
+
+如果使用gin框架，推荐使用`"github.com/DeanThompson/ginpprof"`。
+
+无论哪种方式，HTTP服务都会多出`/debug/pprof` endpoint。
 
 
