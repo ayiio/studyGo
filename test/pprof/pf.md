@@ -26,7 +26,7 @@ pprof开启后，每隔一段时间(10ms)就会收集当前的堆栈信息，获
 
 停止CPU性能分析：`pprof.StopCPUProfile()`
 
-应用程序执行结束后会生成保存有CPU使用情况的文件，使用`go tool pprof`工具进行CPU性能分析。
+应用程序执行结束后会生成保存有CPU使用情况的文件，使用`go tool pprof`工具进行CPU性能分析。例如生成的文件为cpu.pporf，可以使用`go tool pprof cpu.pprof`进入交互式界面进行查看，并使用`top 3`查看CPU使用占比前三的函数。
 
 #### 内存性能分析
 记录堆栈信息：`pprof.WriteHeapProfile(w io.Writer)`
