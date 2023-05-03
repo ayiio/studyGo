@@ -26,7 +26,65 @@ pprof开启后，每隔一段时间(10ms)就会收集当前的堆栈信息，获
 
 停止CPU性能分析：`pprof.StopCPUProfile()`
 
-应用程序执行结束后会生成保存有CPU使用情况的文件，使用`go tool pprof`工具进行CPU性能分析。例如生成的文件为cpu.pporf，可以使用`go tool pprof cpu.pprof`进入交互式界面进行查看，并使用`top 3`查看CPU使用占比前三的函数。
+##### 命令行方式分析：
+
+应用程序执行结束后会生成保存有CPU使用情况的文件，使用`go tool pprof`工具进行CPU性能分析。例如生成的文件为cpu.pporf，可以使用`go tool pprof cpu.pprof`进入交互式界面进行查看，并使用`top 3`查看CPU使用占比前三的函数，交互界面通过`q`退出。
+
+cup.pprof参数说明：
+
+flat: 当前函数占用CPU的耗时。
+
+flat%: 当前函数占用CPU的耗时百分比。
+
+sum%: 函数占用CPU的耗时累计百分比。
+
+cum: 当前函数加上调用当前函数的函数占用CPU的总耗时。
+
+cum%: 当前函数加上调用当前函数的函数占用CPU的总耗时百分比。
+
+最后一列: 函数名称。
+
+还可以使用`list 函数名`的方式查看具体的函数分析。
+
+##### 图形化方式分析：
+调用图：需要安装`graphviz`图形化工具。Windows访问 [graphviz](https://graphviz.org/) 下载后将bin文件夹添加到Path环境变量，通过终端命令`dot -version`查看是否安装成功； mac通过`brew install graphviz`进行安装。安装完成后在`go tool pprof cpu.pprof`的交互式页面中输入`web`就可以通过图形化方式在浏览器中查看调用关系，其中每个框代表一个函数，框越大表示占用CPU资源越多，方框之间的线条表示函数调用关系，线条数字表示函数调用次数，方框中第一行数字表示当前函数占用CPU的百分比，第二行数字表示当前函数累计占用CPU的百分比。
+
+火焰图：或者通过开源工具`go-torch`读取profiling数据生成火焰图来更直观查看结果。安装：`go get -v github.com/uber/go-torch`。可以点击每个方块动态分析对应的内容。火焰图调用顺序从下至上，每个方块表示一个函数，上一层表示这个函数会调用哪些函数，方块大小表示占用CPU时长。该工具若为传入任何参数，则会尝试从`http://localhost:8080/debug/pprof/profile`获取profiling数据，它有三个常用可调参数：
+
+-u -url: 要访问的URL，主机和端口部分
+
+-s -suffix: pprof profile的路径，默认/debug/pprof/profile
+
+-seconds: 要执行profiling的时间长度，默认30秒
+
+
+`go-torch`需要配合`FlameGraph`工具使用，通过以下方式安装：
+
+1.安装perl: [perl donwload](https://strawberryperl.com/)
+
+2.下载FlameGraph：git clone https://github.com/brendangregg/FlameGraph.git
+
+3.将FlameGraph目录加入到操作系统环境变量中
+
+4.windows平台需要更改go-torch/render/flamegraph.go中的GenerateFlameGraph，然后在go-torch目录下执行go install即可
+```go
+flameGraph := findInPath(flameGraphScripts)
+if flameGraph == "" {
+   return nil, errNoPerlScript
+}
+
+// add
+if runtime.GOOS == "windows" {
+   return runScript("perl", append([]string(flameGraph), args...), graphInput)
+}
+return runScript(flameGraph, args, graphInput)
+}
+```
+5.配合压测工具[wrk](https://github.com/wg/wrk)或[wrk2](https://github.com/adjust/go-wrk)
+
+6.使用wrk进行压测，`go-wrk -n 50000 http://127.0.0.1:8080/test/list`压测同时在另一个终端执行`go-torch -u http://127.0.0.1:8080 -t 30`，30秒后终端会提示`Writing svg to torch.svg`，最后通过浏览器可以查看`torch.svg`就可以看到火焰图。
+
+
 
 #### 内存性能分析
 记录堆栈信息：`pprof.WriteHeapProfile(w io.Writer)`
@@ -48,5 +106,6 @@ r.HandleFunc("/debug/pprof/trace", pprof.Trace)
 如果使用gin框架，推荐使用`"github.com/DeanThompson/ginpprof"`。
 
 无论哪种方式，HTTP服务都会多出`/debug/pprof` endpoint。
+
 
 
