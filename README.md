@@ -29,3 +29,9 @@ demos
   bench_test
   
   pprof
+  
+  ### sql
+  mysql
+  
+  redis
+  
