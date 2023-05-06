@@ -16,7 +16,7 @@ import (
 
 func main() {
 	// 数据库信息, data source name
-	dsn := "root:123456@tcp(127.0.0.1:3306)/test"
+	dsn := "用户名:密码@tcp(127.0.0.1:3306)/test"
 	// 连接数据库，Open不会校验用户名和密码，只会查看dsn格式是否正确
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
@@ -24,7 +24,7 @@ func main() {
 		return
 	}
 	defer db.Close()
-	// Ping会校验用户名和密码
+	// Ping会校验用户名和密码，尝试连接数据库
 	err = db.Ping()
 	if err != nil {
 		log.Fatalf("open %s failed, err:%v\n", dsn, err)
