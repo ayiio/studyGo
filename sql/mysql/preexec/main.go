@@ -97,7 +97,11 @@ func preInsert(name string, age int) {
 }
 
 func main() {
-	initDB()
+	err := initDB()
+	if err != nil {
+		fmt.Printf("initdb failed, err=%v\n", err)
+		return
+	}
 	preQuery(0)
 	preInsert("ll", 22)
 	preInsert("gg", 27)
