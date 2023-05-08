@@ -48,3 +48,12 @@ CREATE TABLE `user` (
   PRIMARY KEY(`id`)
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 ```
+
+### Sql占位符
+MySQL： ?
+
+PostgreSQL：$1, $2等
+
+SQLite： ?或$1
+
+Oracle： :name
