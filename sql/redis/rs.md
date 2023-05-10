@@ -15,3 +15,7 @@
 
 ### 获取：
 `go get -u github.com/go-redis/redis`
+
+或
+
+`go get github.com/redis/go-redis/v9`
