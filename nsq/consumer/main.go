@@ -26,7 +26,7 @@ func (m *MyHandler) HandleMessage(msg *nsq.Message) (err error) {
 // 初始化消费者
 func initConsumer(topic string, channel string, address string) (err error) {
 	config := nsq.NewConfig()
-	config.LookupdPollInterval = 15 * time.Second
+	config.LookupdPollInterval = 15 * time.Second  // 每15秒查询一次可用的nsqd列表
 	c, err := nsq.NewConsumer(topic, channel, config)
 	if err != nil {
 		fmt.Printf("create consumer failed, err:%v\n", err)
