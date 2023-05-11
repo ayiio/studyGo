@@ -35,3 +35,5 @@ demos
   
   redis
   
+### nsq
+
