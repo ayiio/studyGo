@@ -24,6 +24,7 @@ func InitTail(path string) (err error) {
 	return
 }
 
+// TODO need fix the null pointer issue
 func TailFile() (line *tail.Line) {
 	select {
 	case line = <-tails.Lines:
