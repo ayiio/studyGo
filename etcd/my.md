@@ -59,6 +59,7 @@ Snapshot是为了防止数据过多而进行的状态快照，Entry表示存储�
 Raft算法在做决策时需要多数节点的投票，所以etcd一般部署集群推荐奇数个节点，推荐数为3、5或7个节点构成一个集群。
 
 搭建一个3个节点集群，在每个etcd节点指定集群成员，为了区分不同的集群最好同时配置一个独一无二的token，以下示例n1、n2和n3表示3个不同的etcd节点：
+
 方式1：
 ```bash
 TOKEN=token-01
@@ -98,6 +99,7 @@ etcd --data-dir=data.etcd --name n3 \
 ```
 
 方式2：
+
 etcd提供了一个可以公网访问的etcd存储地址，可以通过以下命令得到etcd服务的目录，并把它作为-discovery参数使用：
 ```bash
 curl https://discovery.etcd.io/new?size=3
@@ -141,11 +143,27 @@ etcdctl --endpoints=$ENDPOINTS member list
 #### etcd搭建
 [下载地址](https://github.com/etcd-io/etcd/releases)
 
+以Windows平台为例，下载zip文件后解压到本地即可，双击`etcd.exe`即启动了etcd，其他平台需要解压后在bin目录下寻找etcd可执行文件。默认在2379端口监听客户端通信，在2380端口监听节点间通信。
+etcdctl.exe可以理解为客户端或本机的etcd控制端。
+
+连接etcd：旧版本默认etcdctl使用了v2版本的命令，即环境变量设置为ETCDCTL_API=2，如果put/set命令遇到提示`No help topic for 'put'`时，需要设置环境变量SET ETCDCTL_API=3来使用v3版本的API。
+
+put: `etcdctl --endpoints=http://127.0.0.1:2379 put kfc "v50"`
+
+get：`etcdctl --endpoints=http://127.0.0.1:2379 get kfc`
+
+delte：`etcdctl --endpoints=http://127.0.0.1:2379 del kfc`
+
 #### Go 操作etcd
 安装：`go get go.etcd.io/etcd/clientv3`
 
 put和get操作
 ```go
 // put命令用于设置键值对数据，get命令用来根据key获取值
+package main
 
+import (
+  "context"
+  
+)
 ```
