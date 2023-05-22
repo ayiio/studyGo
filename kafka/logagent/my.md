@@ -9,3 +9,7 @@
 
 logAgent从etcd中获取配置信息，如果有新配置再通过kafka分发，写入到ES/Hadoop等，再通过Kibana进行检索。监控系统直接或通过kafka写入数据库，再使用Grafana做客户端展示。
 
+### kafka补充命令
+客户端消费
+bin\windows\kafka-console-consumer.bat --bootstrap-server 127.0.0.1:9091 --topic topic1 --from-beginning
+
