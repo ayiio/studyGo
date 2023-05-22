@@ -3,8 +3,6 @@ package taillog
 // 用于收集日志
 
 import (
-	"time"
-
 	"github.com/hpcloud/tail"
 )
 
@@ -24,14 +22,6 @@ func InitTail(path string) (err error) {
 	return
 }
 
-// TODO need fix the null pointer issue
-func TailFile() (line *tail.Line) {
-	select {
-	case line = <-tails.Lines:
-		return
-	default:
-		time.Sleep(time.Second)
-	}
-	return
+func TailFile() <-chan *tail.Line {
+	return tails.Lines
 }
-
