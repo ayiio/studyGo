@@ -6,32 +6,43 @@ import (
 	"gopkg.in/ini.v1"
 )
 
-type TailParam struct {
-	Path string
+type TailConfig struct {
+	FilePath string `ini:"filePath"`
 }
 
-type KafkaParam struct {
-	Address string
-	Topic   string
+type KafkaConfig struct {
+	Address string `ini:"address"`
+	Topic   string `ini:"topic"`
 }
 
-type CofigParam struct {
-	TailParam
-	KafkaParam
+type AppConfig struct {
+	KafkaConfig `ini:"kafka"`
+	TailConfig  `ini:"tail"`
 }
 
-func InitParam() (c *CofigParam, err error) {
-	iniFile, err := ini.Load("config/config.ini")
+var (
+	config = new(AppConfig)
+)
+
+func InitConfig() *AppConfig {
+	// iniFile, err := ini.Load("config/config.ini")
+	// if err != nil {
+	// 	err = fmt.Errorf("load ini file failed, err=%v", err)
+	// 	return nil, err
+	// }
+	// c = &AppConfig{
+	// 	TailParam{Path: iniFile.Section("tail").Key("filePath").String()},
+	// 	KafkaParam{
+	// 		Address: iniFile.Section("kafka").Key("address").String(),
+	// 		Topic:   iniFile.Section("kafka").Key("topic").String(),
+	// 	},
+	// }
+	// 结构体方式映射
+	err := ini.MapTo(config, "config/config.ini")
 	if err != nil {
-		err = fmt.Errorf("load ini file failed, err=%v", err)
-		return nil, err
+		fmt.Printf("load ini file failed, err=%v\n", err)
+		return nil
 	}
-	c = &CofigParam{
-		TailParam{Path: iniFile.Section("tail").Key("path").String()},
-		KafkaParam{
-			Address: iniFile.Section("kafka").Key("address").String(),
-			Topic:   iniFile.Section("kafka").Key("topic").String(),
-		},
-	}
-	return
+	return config
 }
+
