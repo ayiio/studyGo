@@ -157,13 +157,3 @@ delte：`etcdctl --endpoints=http://127.0.0.1:2379 del kfc`
 #### Go 操作etcd
 安装：`go get go.etcd.io/etcd/clientv3`
 
-put和get操作
-```go
-// put命令用于设置键值对数据，get命令用来根据key获取值
-package main
-
-import (
-  "context"
-  
-)
-```
