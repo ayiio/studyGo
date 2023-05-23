@@ -157,3 +157,10 @@ delte：`etcdctl --endpoints=http://127.0.0.1:2379 del kfc`
 #### Go 操作etcd
 安装：`go get go.etcd.io/etcd/clientv3`
 
+#### Go mod 注意事项
+```go
+replace (
+    google.golang.org/grpc v1.55.0 => google.golang.org/grpc v1.26.0
+)
+```
+
