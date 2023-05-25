@@ -7,14 +7,15 @@ import (
 )
 
 type KafkaConfig struct {
-	Address string `ini:"address"`
+	Address     string `ini:"address"`     // kafka地址
+	MaxChanSize int    `ini:"maxchansize"` // 消息缓冲区大小
 }
 
 // kafka的topic以及tailf文件地址将从etcd中拉取
 type EtcdConfig struct {
-	Address string `ini:"address"`
-	TimeOut int    `ini:"timeout"`
-	LogKey  string `ini:"logkey"`
+	Address string `ini:"address"` // etcd地址
+	TimeOut int    `ini:"timeout"` // etcd超时时间
+	LogKey  string `ini:"logkey"`  // 存储key值
 }
 
 type AppConfig struct {
