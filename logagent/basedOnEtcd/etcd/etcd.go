@@ -13,7 +13,7 @@ var (
 	cli *clientv3.Client
 )
 
-type ConfEntry struct {
+type LogEntry struct {
 	Path  string `json:"path"`
 	Topic string `json:"topic"`
 }
@@ -32,7 +32,7 @@ func InitEtcd(address []string, timeout time.Duration) (err error) {
 }
 
 // 从etcd中根据key获取配置信息
-func GetConfByKey(key string) (confs []*ConfEntry, err error) {
+func GetConfByKey(key string) (confs []*LogEntry, err error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	resp, err := cli.Get(ctx, key)
 	cancel()
@@ -48,4 +48,14 @@ func GetConfByKey(key string) (confs []*ConfEntry, err error) {
 		}
 	}
 	return
+}
+
+//监视etcd中对应key的变化，并通知有使用到配置项的地方-tailMgr
+func Watcher(key string) {
+	watchresp := cli.Watch(context.Background(), key)
+	for wr := range watchresp {
+		for _, wrv := range wr.Events {
+			fmt.Println(wrv.Type, wrv.Kv.Key, wrv.Kv.Value)
+		}
+	}
 }
