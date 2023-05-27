@@ -48,3 +48,4 @@ func InitConfig() *AppConfig {
 	}
 	return config
 }
+
