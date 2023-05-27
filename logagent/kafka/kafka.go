@@ -35,4 +35,3 @@ func SendMsg(topic, msg string) {
 	fmt.Printf("send kafka success, pid=%v, offset=%v\n", pid, offset)
 }
 
-
