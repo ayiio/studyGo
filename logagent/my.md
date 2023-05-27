@@ -27,3 +27,5 @@ IF ["%KAFKA_HEAP_OPTS%"] EQU [""] (
 )
 ```
 
+### map操作陷阱
+[map/slice的拷贝/更新陷阱](https://golang.coding3min.com/impossible/%E8%BF%9B%E9%98%B6%E5%B8%B8%E7%8A%AF%E7%9A%84%E9%94%99%E8%AF%AF/)
