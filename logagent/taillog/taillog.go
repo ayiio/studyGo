@@ -25,3 +25,4 @@ func InitTail(path string) (err error) {
 func TailFile() <-chan *tail.Line {
 	return tails.Lines
 }
+
