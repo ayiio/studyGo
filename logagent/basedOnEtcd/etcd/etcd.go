@@ -58,4 +58,5 @@ func Watcher(key string) {
 			fmt.Println(wrv.Type, wrv.Kv.Key, wrv.Kv.Value)
 		}
 	}
+	
 }
