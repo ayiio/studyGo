@@ -50,13 +50,25 @@ func GetConfByKey(key string) (confs []*LogEntry, err error) {
 	return
 }
 
-//监视etcd中对应key的变化，并通知有使用到配置项的地方-tailMgr
-func Watcher(key string) {
+//监视etcd中对应key的变化，并通知有使用到配置项的地方--tailMgr
+func Watcher(key string, ch chan<- []*LogEntry) {
 	watchresp := cli.Watch(context.Background(), key)
 	for wr := range watchresp {
 		for _, wrv := range wr.Events {
-			fmt.Println(wrv.Type, wrv.Kv.Key, wrv.Kv.Value)
+			//通知外部taillog/tailMgr
+			//通过类型判断具体的值
+			var newConf []*LogEntry
+			//删除操作不需要使用unmarshal
+			if wrv.Type != clientv3.EventTypeDelete {
+				err := json.Unmarshal(wrv.Kv.Value, &newConf)
+				if err != nil {
+					fmt.Printf("unmarshal new conf failed, err=%v\n", err)
+					continue
+				}
+			}
+			fmt.Println("conf has been updated")
+			ch <- newConf
 		}
 	}
-	
+
 }
