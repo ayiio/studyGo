@@ -34,10 +34,17 @@ ES中Field(字段)类似关系型数据库中的Column(数据列)。</br>
 ES中Mapping(映射)类似关系型数据库中的Schema(模式)。
 
 ###### ES搭建
-[ES下载](https://www.elastic.co/cn/downloads/elasticsearch) / [ES旧版本](https://www.elastic.co/cn/downloads/past-releases#elasticsearch)
+1.[ES下载](https://www.elastic.co/cn/downloads/elasticsearch) / [ES旧版本](https://www.elastic.co/cn/downloads/past-releases#elasticsearch)
+
+2.启动：以Windows为例，解压后执行bin\elasticsearch.bat，默认使用本机9200端口。使用浏览器访问elasticsearch服务(localhost:9200)，可以查看对应的节点信息。
 
 ##### Kibana
-图形化展示
+开源的分析和图形化展示平台，与ElasticSearch一起工作，需要和ES保持同一版本。可以使用Kibana以搜索、查看等方式和存储在ElasticSearch索引的数据进行交互。</br>
+1.[Kibana下载](https://www.elastic.co/cn/downloads/kibana)
+
+2.配置：以Windows为例，解压后修改config/kibana.yml，将其中的`elasticsearch.hosts`设置为指定地址，例如`elasticsearch.hosts: ["http://127.0.0.1:9200"]。同时修改语言为简体中文，`i18n.locale: "zh-CN"`。
+
+3.启动：以Windows为例，解压后执行bin\kibana.bat，等待启动过程完成后即可看到对应的图形化界面。
 
 #### 系统监控
 gopsutil做系统监控信息的采集，写入influxDB，使用grafana展示。
