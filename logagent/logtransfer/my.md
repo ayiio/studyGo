@@ -38,8 +38,18 @@ ES中Mapping(映射)类似关系型数据库中的Schema(模式)。
 
 2.启动：以Windows为例，解压后执行bin\elasticsearch.bat，默认使用本机9200端口。使用浏览器访问elasticsearch服务(localhost:9200)，可以查看对应的节点信息。
 
+###### ES使用
+`curl -X GET 127.0.0.1:9200/_cat/health?v`用于查看健康状态。</br>
+`curl -X GET 127.0.0.1:9200/_cat/indices?v`用于查询当前es集群中所有的indices索引。</br>
+`curl -X PUT 127.0.0.1:9200/www`用于创建索引。</br>
+`curl -X DELETE 127.0.0.1:9200/www`用于删除索引。</br>
+`curl -H "ContentType:application/json" -X POST 127.0.0.1:9200/user/person -d '{"name":"test", "age":22, "married":true}'`用于插入数据。</br>
+`curl -X GET 127.0.0.1:9200/user/person/_search`用于检索。</br>
+`curl -H "ContentType:application/json" -X PUT 127.0.0.1:9200/user/person/4 -d '{"query":{"match":{"name":"test"}}}'`用于按条件检索，ES默认一次最多返回10条结果，可以通过size字段设置返回结果的数目：`curl -H "ContentType:application/json" -X PUT 127.0.0.1:9200/user/person/4 -d '{"query":{"match":{"name":"test"}, "size":2}}'`。</br>
+
 ##### Kibana
 开源的分析和图形化展示平台，与ElasticSearch一起工作，需要和ES保持同一版本。可以使用Kibana以搜索、查看等方式和存储在ElasticSearch索引的数据进行交互。</br>
+###### Kibana搭建
 1.[Kibana下载](https://www.elastic.co/cn/downloads/kibana)
 
 2.配置：以Windows为例，解压后修改config/kibana.yml，将其中的`elasticsearch.hosts`设置为指定地址，例如`elasticsearch.hosts: ["http://127.0.0.1:9200"]。同时修改语言为简体中文，`i18n.locale: "zh-CN"`。
