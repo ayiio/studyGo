@@ -45,7 +45,7 @@ ES中Mapping(映射)类似关系型数据库中的Schema(模式)。
 `curl -X DELETE 127.0.0.1:9200/www`用于删除索引。</br>
 `curl -H "ContentType:application/json" -X POST 127.0.0.1:9200/user/person -d '{"name":"test", "age":22, "married":true}'`用于插入数据。</br>
 `curl -X GET 127.0.0.1:9200/user/person/_search`用于检索。</br>
-`curl -H "ContentType:application/json" -X PUT 127.0.0.1:9200/user/person/4 -d '{"query":{"match":{"name":"test"}}}'`用于按条件检索，ES默认一次最多返回10条结果，可以通过size字段设置返回结果的数目：`curl -H "ContentType:application/json" -X PUT 127.0.0.1:9200/user/person/4 -d '{"query":{"match":{"name":"test"}, "size":2}}'`。
+`curl -H "ContentType:application/json" -X PUT 127.0.0.1:9200/user/person/4 -d '{"query":{"match":{"name":"test"}}}'`用于按条件检索，ES默认一次最多返回10条结果，可以通过size字段设置返回结果的数目：`curl -H "ContentType:application/json" -X PUT 127.0.0.1:9200/user/person/4 -d '{"query":{"match":{"name":"test"}}, "size":2}'`。
 
 ###### Go操作ES
 [第三方库](https://github.com/olivere/elastic)，使用go.mod管理依赖，注意保持和ES版本一致。`require ( github.com/olivere/elastic/v8 v8.0.0 )
