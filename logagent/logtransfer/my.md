@@ -33,6 +33,9 @@ ES中Document(文档)，不同文档可以有不同的字段集合，类似关�
 ES中Field(字段)类似关系型数据库中的Column(数据列)。</br>
 ES中Mapping(映射)类似关系型数据库中的Schema(模式)。
 
+###### ES搭建
+[ES下载](https://www.elastic.co/cn/downloads/elasticsearch) / [ES旧版本](https://www.elastic.co/cn/downloads/past-releases#elasticsearch)
+
 ##### Kibana
 图形化展示
 
