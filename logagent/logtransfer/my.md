@@ -55,7 +55,7 @@ ES中Mapping(映射)类似关系型数据库中的Schema(模式)。
 ###### Kibana搭建
 1.[Kibana下载](https://www.elastic.co/cn/downloads/kibana)
 
-2.配置：以Windows为例，解压后修改config/kibana.yml，将其中的`elasticsearch.hosts`设置为指定地址，例如`elasticsearch.hosts: ["http://127.0.0.1:9200"]。同时修改语言为简体中文，`i18n.locale: "zh-CN"`。
+2.配置：以Windows为例，解压后修改config/kibana.yml，将其中的`elasticsearch.hosts`设置为指定地址，例如`elasticsearch.hosts: ["http://127.0.0.1:9200"]`。同时修改语言为简体中文，`i18n.locale: "zh-CN"`。
 
 3.启动：以Windows为例，解压后执行bin\kibana.bat，等待启动过程完成后即可看到对应的图形化界面。
 
