@@ -36,7 +36,11 @@ ES中Mapping(映射)类似关系型数据库中的Schema(模式)。
 ###### ES搭建
 1.[ES下载](https://www.elastic.co/cn/downloads/elasticsearch) / [ES旧版本](https://www.elastic.co/cn/downloads/past-releases#elasticsearch)
 
-2.启动：以Windows为例，解压后执行bin\elasticsearch.bat，默认使用本机9200端口。使用浏览器访问elasticsearch服务(localhost:9200)，可以查看对应的节点信息。
+2.启动：以Windows为例，解压后执行bin\elasticsearch.bat，默认使用本机9200端口。使用浏览器访问elasticsearch服务(localhost:9200)，可以查看对应的节点信息。</br>
+配置：</br>
+  + 命令行乱码：修改jvm.options，添加`-Dfile.encoding=GBK`
+  + 无法访问：关闭默认开启的ssl认证，修改elasticsearch.yml，将`xpack.security.http.ssl: enabled: true`改为`enabled: false`
+  + 用户名密码：首次启动，从log中查找并记录用户名和密码
 
 ###### ES使用
 `curl -X GET 127.0.0.1:9200/_cat/health?v`用于查看健康状态。</br>
