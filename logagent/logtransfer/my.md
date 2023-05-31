@@ -48,7 +48,7 @@ ES中Mapping(映射)类似关系型数据库中的Schema(模式)。
 `curl -X GET 127.0.0.1:9200/_cat/indices?v`用于查询当前es集群中所有的indices索引。</br>
 `curl -X PUT 127.0.0.1:9200/www`用于创建索引。</br>
 `curl -X DELETE 127.0.0.1:9200/www`用于删除索引。</br>
-`curl -H "ContentType:application/json" -X POST 127.0.0.1:9200/user/person -d '{"name":"test", "age":22, "married":true}'`用于插入数据。</br>
+`curl -H "ContentType:application/json" -X POST 127.0.0.1:9200/user/person -d '{"name":"test", "age":22, "married":true}'`用于插入数据，postman使用命令`127.0.0.1:9200/user/_doc/person`添加新type。</br>
 `curl -X GET 127.0.0.1:9200/user/person/_search`用于检索。</br>
 `curl -H "ContentType:application/json" -X PUT 127.0.0.1:9200/user/person/4 -d '{"query":{"match":{"name":"test"}}}'`用于按条件检索，ES默认一次最多返回10条结果，可以通过size字段设置返回结果的数目：`curl -H "ContentType:application/json" -X PUT 127.0.0.1:9200/user/person/4 -d '{"query":{"match":{"name":"test"}}, "size":2}'`。
 
