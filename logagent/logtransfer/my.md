@@ -40,7 +40,7 @@ ES中Mapping(映射)类似关系型数据库中的Schema(模式)。
 配置：</br>
   + 命令行乱码：修改jvm.options，添加`-Dfile.encoding=GBK`
   + 无法访问：关闭默认开启的ssl认证，修改elasticsearch.yml，将`xpack.security.http.ssl: enabled: true`改为`enabled: false`
-  + 用户名密码：首次启动，从log中查找并记录用户名和密码
+  + 用户名密码：首次启动，从log中查找并记录用户名和密码，使用bin\elasticsearch-reset-password.bat重设密码
 
 ###### ES使用
 `curl -X GET 127.0.0.1:9200/_cat/health?v`用于查看健康状态。</br>
