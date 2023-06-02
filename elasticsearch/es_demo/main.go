@@ -44,7 +44,7 @@ func main() {
 		fmt.Printf("get id='%s' from index='%s', version='%d'\n", resp.Id, resp.Index, resp.Version)
 	}
 	
-	//解析
+	//解析 
 	var np Person
 	data, err := resp.Source.MarshalJSON()
 	if err != nil {
