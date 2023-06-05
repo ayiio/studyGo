@@ -33,5 +33,3 @@ func main() {
 	fmt.Println("init kafka success.")
 	select {}
 }
-
-
