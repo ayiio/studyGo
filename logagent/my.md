@@ -29,3 +29,13 @@ IF ["%KAFKA_HEAP_OPTS%"] EQU [""] (
 
 ### map操作陷阱
 [map/slice的拷贝/更新陷阱](https://golang.coding3min.com/impossible/%E8%BF%9B%E9%98%B6%E5%B8%B8%E7%8A%AF%E7%9A%84%E9%94%99%E8%AF%AF/)
+
+### 思考
+   + 项目架构
+   + ELK区别
+   + 保证日志不丢的方法-重启后继续收集，记录读取文件的offset
+   + kafka相关概念
+   + etcd的watch原理
+   + es相关概念，底层原理
+   + 算法和数据结构
+   + 前端基础，中间件，docker
