@@ -11,6 +11,17 @@ func main() {
 		})
 	})
 
+	r.GET("/test2/:name", func(ctx *gin.Context) {
+		s := ctx.Param("name")
+		ctx.String(http.StatusOK, s)
+	})
+
+	r.GET("/test3/:name/*action", func(ctx *gin.Context) {
+		name := ctx.Param("name")
+		action := ctx.Param("action")
+		ctx.String(http.StatusOK, name+" = "+action)
+	})
+
 	r.Run(":0808")
 
 }
