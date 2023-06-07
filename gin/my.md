@@ -12,9 +12,9 @@
     + 通过DefaultQuery() 或 Query() 方法获取
 #### 表单参数
     + 传输为post请求，常见格式有4中：
-        + application/json
-        + application/X-WWW-form-urlencoded
-        + application/xml
-        + multipart/form-data
+        - application/json
+        - application/X-WWW-form-urlencoded
+        - application/xml
+        - multipart/form-data
     + 表单参数可以通过 PostForm() 方法获取，默认解析是 X-WWW-form-urlencoded 或 form-data格式的参数
 #### 上传单个文件
