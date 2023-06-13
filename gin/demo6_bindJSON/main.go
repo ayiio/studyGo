@@ -17,7 +17,7 @@ type Person struct {
 func main() {
 	r := gin.Default()
 
-	//curl http://localhost:8000/add -H 'content-type:application/json' -d "{\"user\":\"root\", \"age\":1}"" -X POST
+	//curl http://localhost:8000/add -H 'content-type:application/json' -d "{\"user\":\"root\", \"age\":1}" -X POST
 	r.POST("add", func(c *gin.Context) {
 		//声明接收的结构体
 		var p Person
