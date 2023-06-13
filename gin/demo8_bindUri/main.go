@@ -14,7 +14,7 @@ type LoginForm struct {
 func main() {
 	r := gin.Default()
 
-	//curl http://localhost:8000/root/admin
+	//curl http://localhost:8000/uritest/root/admin
 	r.GET("/uritest/:user/:password", func(ctx *gin.Context) {
 		var login LoginForm
 		if err := ctx.ShouldBindUri(&login); err != nil {
