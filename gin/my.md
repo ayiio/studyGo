@@ -1,5 +1,5 @@
 ### gin
-获取：`go get -u github.com/gin-gonic/gin`
+    获取：`go get -u github.com/gin-gonic/gin`
 ### gin路由
 #### 基本路由
     gin框架中采用的路由库是基于httprouter做的
