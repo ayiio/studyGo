@@ -87,3 +87,5 @@
     session弥补了Cookie的不足，session必须依赖于Cookie才能使用，生成一个sessionId放在Cookie里传给客户端即可(实际Cookie信息存储在服务端，只返回sessionId到客户端)
 ##### session中间件
     内存存储和Redis存储
+    <br>设计思路：
+    
