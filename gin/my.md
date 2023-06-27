@@ -86,6 +86,49 @@
 ##### Session是什么
     session弥补了Cookie的不足，session必须依赖于Cookie才能使用，生成一个sessionId放在Cookie里传给客户端即可(实际Cookie信息存储在服务端，只返回sessionId到客户端)
 ##### session中间件
-    内存存储和Redis存储
-    <br>设计思路：
+    通用session，支持内存存储和Redis缓存
+    设计思路：
+        + session模块设计(session规范)
+            + k-v系统，通过key进行增删查改
+            + session可以存储在内存或Redis中
+            + 用户与session一对一，session内一对多kv，session与sessionMgr多对一
+            + session接口设计
+                + Set()
+                + Get()
+                + Del()
+                + Save()，session延迟加载(redis)
+        + sessionMgr接口设计(Mgr规范)
+            + Init() 初始化，加载redis地址
+            + CreateSession() 创建一个新的session
+            + GetSession() 通过SessionID获取对应的session对象
+        + MemorySession设计(session实现)
+            + 定义MemorySession对象(字段：sessionID，存kv map，读写锁)
+            + 构造函数，获取对象
+            + memorySession接口设计
+                + Set()
+                + Get()
+                + Del()
+                + Save()，session延迟加载(redis)
+        + MemorySessionMgr设计(Mgr实现)
+            + 定义MemorySessionMgr对象(字段：session map，读写锁)
+            + 构造函数，获取对象
+            + memorySessionMgr接口设计
+                + Init()
+                + CreateSession()
+                + GetSession()
+        + RedisSession设计(session实现)
+            + 定义RedisSession对象(字段：sessionID，存kv map，读写锁， redis连接池，记录内存中的map是否被修改的标记)
+            + 构造函数
+            + redisSession接口设计
+                + Set() 将session存储到内存中的map
+                + Get() 取数据，实现延迟加载
+                + Del()
+                + Save() 将session存储到redis
+        + RedisSessionMgr设计(Mgr实现)
+            + 定义RedisSessionMgr对象(字段：redis地址，redis密码，连接池，读写锁，大map)
+            + 构造函数
+            + RedisSessionMgr接口设计
+                + Init()
+                + CreateSession()
+                + GetSession()
     
