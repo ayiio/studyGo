@@ -57,3 +57,7 @@
         update_time timestamp
      ) engine=InnoDB, charset=utf8;
      ```
+## 实体类
+   分类的结构体
+
+   文章结构体(不包含大文本的文章内容)
