@@ -1,0 +1,52 @@
+{{define "views/500.html"}}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf8">
+        <title>关于_XXX个人博客 - 一个站在web前端设计之路的技术网站</title>
+        <meta name="keywords" content="个人博客,XXX个人博客,个人博客模板,XXX"/>
+        <meta name="description" content="XXX个人博客,一起快乐学习"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/static/css/base.css" rel="stylesheet">
+        <link href="/static/css/index.css" rel="stylesheet">
+        <link href="/static/css/m.css" rel="stylesheet">
+        <!-- if lt IE 9-->
+        <script src="js/modernizr.js"></script>
+        <!-- end if-->
+        <script>
+            window.onload=function () {
+                var oh2 = document.getElementsByTagName("h2")[0]
+                var ou1 = document.getElementsByTagName("u1")[0]
+                oh2.onclick = function () {
+                    var style = ou1.style;
+                    style.display = style.display=="block"?"none":"block";
+                    oh2.className = style.display=="block"?"open":""
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <header>
+            <div>
+                <nav>
+                    <ul>
+                        <li><a href="/">网站首页</a></li>
+                        <li><a href="/article/new/">投稿</a></li>
+                        <li><a href="/leave/new/">留言</a></li>
+                        <li><a href="/about/me/">关于我</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <article>
+            <h1 class="t_nav">
+                <span>http 500 internal error</span>
+                <a href="/" class="n1">点击刷新</a>
+            </h1>
+        </article>
+        <footer>
+            <p>Design by <a href="/">XXX个人博客</a></p>
+        </footer>
+    </body>
+</html>
+{{end}}
