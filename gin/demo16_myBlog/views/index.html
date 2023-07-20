@@ -1,0 +1,72 @@
+{{define "views/index.html"}}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf8">
+        <title>关于_XXX个人博客 - 一个站在web前端设计之路的技术网站</title>
+        <meta name="keywords" content="个人博客,XXX个人博客,个人博客模板,XXX"/>
+        <meta name="description" content="XXX个人博客,一起快乐学习"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/static/css/base.css" rel="stylesheet">
+        <link href="/static/css/index.css" rel="stylesheet">
+        <link href="/static/css/m.css" rel="stylesheet">
+        <!-- if lt IE 9-->
+        <script src="js/modernizr.js"></script>
+        <!-- end if-->
+        <script>
+            window.onload=function () {
+                var oh2 = document.getElementsByTagName("h2")[0]
+                var ou1 = document.getElementsByTagName("u1")[0]
+                oh2.onclick = function () {
+                    var style = ou1.style;
+                    style.display = style.display=="block"?"none":"block";
+                    oh2.className = style.display=="block"?"open":""
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <header>
+            <div class="tophead">
+                <div class="logo"><a href="/">我的博客</a></div>
+
+                <nav class="topnav" id="topnav">
+                    <ul>
+                        <li><a href="/">网站首页</a></li>
+                        <li><a href="/article/new/">投稿</a></li>
+                        <li><a href="/leave/new/">留言</a></li>
+                        <li><a href="/about/me/">关于我</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <article>
+            <div class="blogs">
+                {{range .article_list}}
+                    <li>
+                        <h3 class="blogtitle"><a href="/article/detail/?article_id={{.Id}}">{{.Title}}</a></h3>
+                        <div class="bloginfo">
+                            <p>{{.Summary}}</p>
+                        </div>
+                        <div class="autor">
+                            <span class="lm"><a href="/category/?category_id={{.Category.CategoryId}}" title="CSS3|Html5" target="_blank" class=""></a></span>
+                            <span class="dtime">{{.CreateTime}}</span>
+                            <span class="viewnum">浏览 ({{.ViewCount}})</span>
+                            <span class="viewnum">评论 ({{.CommentCount}})</span>
+                            <span class="readmore"><a href="/article/detail/?article_id={{.Id}}">阅读原文</a></span>
+                        </div>
+                    </li>
+                {{end}}
+            </div>
+            <div class="sidebar">
+                <div class="about">
+                    <div class="avatar"><img src="/static/images/avatar.jpg" alt=""></div>
+                    <p class="abname">XXX</p>
+                    <p class="abposition">Web前端</p>
+                    <div class="abtext">工作学些</div>
+                </div>
+            </div>
+        </article>
+    </body>
+</html>
+{{end}}
