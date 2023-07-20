@@ -8,7 +8,7 @@ import (
 
 func init() {
 	//parseTime=true 将mysql中的时间类型自动解析为go结构体中的时间类型
-	dns := "root:root111@tcp(localhost:3306)/gindemo?parseTime=true"
+	dns := "xxx:xxx@tcp(localhost:3306)/xxx?parseTime=true"
 	err := Init(dns)
 	if err != nil {
 		panic(err)
