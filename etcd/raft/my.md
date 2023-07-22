@@ -20,4 +20,13 @@
   如果一个跟随者在一段时间里没有接收到任何消息，也就是选举超时，然后它会认为系统中没有可用的领导者，将开始进行选举以选出新的领导者   
   要开始一次选举过程，follower会给当前term加1并且转换成candidate状态，然后它会并行向集群中的其他服务器节点发送请求投票的RPCs来给自己投票   
   候选人的状态维持直到在以下一个条件发生时：   
-      
+      它自己赢得了这次选举  
+      其他服务器成为了领导者   
+      一段时间之后没有任何一个获胜  
+### Log replication（日志复制）  
+  当选出leader后，它会开始接收客户端请求，每个请求会带有一个指令，可以被回放到状态机中  
+  leader吧指令追加成一个log entry，然后通过appendentries RPC并行发送给其他的server，当该entry被多个server复制后，leader会把该entry回放到状态机中，然后把结果返回给客户端  
+  当follower宕机或者运行较慢时，leader会无限重发appendentries 给这些follower，直到所有的follower都复制了这个log entry   
+  raft的log replication要保证如果两个log entry有相同的index和term，那么它们存储相同的指令  
+  leader在一个特定的term和index下，只会创建一个log entry   
+  
