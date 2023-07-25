@@ -5,7 +5,7 @@
   client -> call -> server  
   server -> register -> **registry**  
 ### 注册中心选型
-<img width="243" alt="image" src="https://github.com/ayiio/studyGo/assets/61615400/e1b80c19-fbe0-4f56-a644-9b7e31a0326f">   
+<img width="243" alt="image" src="https://github.com/ayiio/studyGo/assets/61615400/e1b80c19-fbe0-4f56-a644-9b7e31a0326f"> 
 
 euerka(aws)主从式存储，存在一定的延迟。  
 consul/zookeeper/etcd 分布式存储，zk重量级。  
