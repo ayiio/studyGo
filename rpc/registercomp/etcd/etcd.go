@@ -59,6 +59,7 @@ func init() {
 }
 
 func (e *EtcdRegistry) run() {
+	//10秒周期定时任务
 	ticker := time.NewTicker(time.Second * 10)
 	for {
 		select {
@@ -76,6 +77,7 @@ func (e *EtcdRegistry) run() {
 			}
 			e.registryServiceMap[service.Name] = registryService
 		case <-ticker.C:
+			//缓存，client pull -> register
 			e.syncServiceFromEtcd()
 		default:
 			e.registerOrKeepAlive()
