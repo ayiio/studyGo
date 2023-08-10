@@ -6,7 +6,7 @@
 * gRPC可以实现微服务，将大的项目拆分为多个小且独立的业务模块，也就是服务，各服务间使用高效的protobuf协议进行RPC调用，gRPC默认使用protocol buffers，即由google开源的一套成熟的结构数据序列化机制。也可以使用其他数据格式如JSON
 * 可以用proto files创建gRPC服务，用message类型来定义方法参数和返回类型
 ## 安装gRPC 和 Protobuf
-* go get github.com/goloang/protobuf/proto
+* go get github.com/golang/protobuf/proto
 * go get google.golang.org/grpc (无法使用时替换为如下命令)   
   ```
   git clone https://github.com/grpc/grpc-go.git $GOPATH/src/google.golang.org/grpc
@@ -17,7 +17,7 @@
   cd $GOPATH/src
   go install google.golang.org/grpc
   ```
-* go get github.com/golang/protobuf/protoc-gen-go
+* go get github.com/golang/protobuf/protoc-gen-go ==> go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 * 上面安装好后，会在GOPATH/bin下生成protoc-gen-go.exe
 * 但还需要一个protoc.exe，windows较难实现手动编译，可以下载 `https://github.com/protocolbuffers/protobuf/releases/tag/v3.9.0` 放到GOPATH/bin下  
 ## Protobuf语法
