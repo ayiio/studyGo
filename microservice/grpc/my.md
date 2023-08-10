@@ -21,4 +21,30 @@
 * 上面安装好后，会在GOPATH/bin下生成protoc-gen-go.exe
 * 但还需要一个protoc.exe，windows较难实现手动编译，可以下载 `https://github.com/protocolbuffers/protobuf/releases/tag/v3.9.0` 放到GOPATH/bin下  
 ## Protobuf语法
+### 1.基本规范
+* 文件以`.proto`作为后缀名，除结构定义外的语句以分号结尾
+* 结构定义可以包含：`message` / `service` / `enum`
+* rpc方法定义结尾的分号可有可无
+* Message命名采用驼峰命名方式，字段命名采用小写字母加下划线分割方式
+```
+message TestServerRequest {
+    required string test_name = 1;
+}
+```
+* Enums类型名采用驼峰命名方式，字段命名采用大写字母加下划线分割方式
+```
+enum Foo {
+    FIRST_VALUE = 1;
+    SENCOND_VALUE = 2;
+}
+```
+* Service 与 rpc 方法名统一采用驼峰式命名
+### 2.字段规则
+* 字段格式：限定修饰符 | 数据类型 | 字段名称 | = | 字段编码值 | [字段默认值]
+* 限定修饰符包含 `required` / `optional` / `repeated`
+  * Required：表示是一个必须字段，必须相对应于发送方，在发送消息之前必须设置该字段的值，对于接收方，必须能够识别该字段的意思。发送之前没有设置required字段或者无法识别required字段都会引发编码异常，导致消息被丢弃
+  * Optional：表示是一个可选字段，可选对于发送方，在发送消息时，可以有选择性的设置或者不设置该字段的值，对于接收方，如果能够识别可选字段就进行相应的处理，如果无法识别，则忽略该字段，消息中的其他字段正常处理。
+    因为Optional字段的特性，很多接口在升级中都把后来添加的字段都统一设置为optional字段，这样老的版本无需升级程序也可以正常与新的程序进行通信，只不过新的字段无法识别而已，以为并不是每一个节点都需要新的功能，因此可以做到按需升级和平滑过渡。
+  * Repeated：表示该字段可以包含0~N个元素。其特性和optional一样，但是每一次可以包含多个值。可以看作是在传递一个数组的值。
+* 数据类型
 
