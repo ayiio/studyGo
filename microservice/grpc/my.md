@@ -19,7 +19,8 @@
   ```
 * go get github.com/golang/protobuf/protoc-gen-go ==> go install google.golang.org/protobuf/cmd/protoc-gen-go@latest [参考](https://www.cnblogs.com/shiding/p/16608117.html)
 * 上面安装好后，会在GOPATH/bin下生成protoc-gen-go.exe
-* 但还需要一个protoc.exe，windows较难实现手动编译，可以下载 `https://github.com/protocolbuffers/protobuf/releases/tag/v3.9.0` 放到GOPATH/bin下   
+* 但还需要一个protoc.exe，windows较难实现手动编译，可以下载 `https://github.com/protocolbuffers/protobuf/releases/tag/v3.9.0` 放到GOPATH/bin下
+* help from [this](https://www.likecs.com/ask-106645.html)  
 ```
 go get -u google.golang.org/protobuf/cmd/protoc-gen-go
 go install google.golang.org/protobuf/cmd/protoc-gen-go
