@@ -19,7 +19,14 @@
   ```
 * go get github.com/golang/protobuf/protoc-gen-go ==> go install google.golang.org/protobuf/cmd/protoc-gen-go@latest [参考](https://www.cnblogs.com/shiding/p/16608117.html)
 * 上面安装好后，会在GOPATH/bin下生成protoc-gen-go.exe
-* 但还需要一个protoc.exe，windows较难实现手动编译，可以下载 `https://github.com/protocolbuffers/protobuf/releases/tag/v3.9.0` 放到GOPATH/bin下  
+* 但还需要一个protoc.exe，windows较难实现手动编译，可以下载 `https://github.com/protocolbuffers/protobuf/releases/tag/v3.9.0` 放到GOPATH/bin下
+```
+go get -u google.golang.org/protobuf/cmd/protoc-gen-go
+go install google.golang.org/protobuf/cmd/protoc-gen-go
+
+go get -u google.golang.org/grpc/cmd/protoc-gen-go-grpc
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc
+```
 ## Protobuf语法
 ### 1.基本规范
 * 文件以`.proto`作为后缀名，除结构定义外的语句以分号结尾
@@ -220,7 +227,7 @@ service UserInfoService {
 }
 ```
 ### 2.生成go文件
-* gland中打开命令行，输入命令生成接口文件：`protoc -I . --go_out=plugins=grpc:. ./user.proto` / `protoc -I . --go-grpc_out=plugins=grpc:. ./user.proto`
+* gland中打开命令行，输入命令生成接口文件：`protoc -I . --go_out=plugins=grpc:. ./user.proto` or  `protoc -I . --go-grpc_out=plugins=grpc:. ./user.proto`
 ### 3.编写服务端
 
 ### 4.编写客户端
