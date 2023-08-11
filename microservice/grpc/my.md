@@ -227,7 +227,7 @@ service UserInfoService {
 }
 ```
 ### 2.生成go文件
-* gland中打开命令行，输入命令生成接口文件：`protoc -I . --go_out=plugins=grpc:. ./user.proto` or  `protoc -I . --go-grpc_out=plugins=grpc:. ./user.proto`
+* gland中打开命令行，输入命令生成接口文件：`protoc -I . --go_out=plugins=grpc:. ./user.proto` or  `protoc -I . --go-grpc_out=plugins=grpc:. ./user.proto` or `protoc --go-grpc_out=. file_path/file_name*.proto `
 ### 3.编写服务端
 
 ### 4.编写客户端
