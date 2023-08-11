@@ -191,9 +191,36 @@ message Foo {
 ## 使用gRPC构建微服务
 * 代码实现查询，客户端向服务端查询用户信息
 ### 1.编写proto文件
+```
+//版本号
+syntax = "proto3";
 
+//指定包名
+package proto;
+
+//定义结构体
+//请求结构体
+message UserRequest {
+    //定义用户名
+    string name = 1;
+}
+
+//响应结构体
+message UserResponse {
+    int32 id = 1;
+    string name = 2;
+    int32 age = 3;
+    //repeated 修饰符是可变数组，go转为切片
+    repeated string hobby = 4;
+}
+
+//service定义方法
+service UserInfoService {
+    rpc GetUserInfo (UserRequest) returns (UserResponse) {}
+}
+```
 ### 2.生成go文件
-* gland中打开命令行，输入命令生成接口文件：`protoc -I . --go_out=plugins=grpc:./user.proto`
+* gland中打开命令行，输入命令生成接口文件：`protoc -I . --go_out=plugins=grpc:. ./user.proto` / `protoc -I . --go-grpc_out=plugins=grpc:. ./user.proto`
 ### 3.编写服务端
 
 ### 4.编写客户端
