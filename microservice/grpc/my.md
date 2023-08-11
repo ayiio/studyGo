@@ -68,3 +68,133 @@ enum Foo {
     ```
 * 生成的接口代码作为客户端与服务端的约定，服务端必须实现定义的所有接口方法，客户端直接调用同名方法向服务端发起请求，比较麻烦的是即便业务上不需要参数也必须指定一个请求消息，一般会定义一个空message
 ### 4.Message如何定义
+* 一个message类型定义描述了一个请求或响应的消息格式，可以包含多种类型字段
+* 例如定义一个搜索请求的消息格式，每个请求包含查询字符串、页码、每页数目
+* 字段名用小写，转为go文件后自动变为大写，message就相当于结构体
+```
+syntax = "proto3";
+
+message SearchRequest {
+    string query = 1;          //查询字符串
+    int32 page_number = 2;     //页码
+    int32 result_per_page = 3; //每页条数
+}
+```
+* 首行声明使用protobuf版本为proto3
+* SearchRequest定义了三个字段，每个字段声明以分号结尾，.proto文件支持双斜线//添加单行注释
+### 5.添加更多Message类型
+* 一个.proto文件中可以定义多个消息类型，一般用于同时定义多个相关的消息，例如在同一个.proto文件中同时定义搜索请求和响应消息
+```
+syntax = "proto3";
+
+//SearchRequest 搜索请求
+message SearchRequest {
+    string query = 1;          //查询字符串
+    int32 page_number = 2;     //页码
+    int32 result_per_page = 3; //每页条数
+}
+//SearchResponse 搜索响应
+message SearchResponse {
+    ...
+}
+```
+### 6.如何使用其他message
+* message支持嵌套使用，作为另一message中的字段类型
+```
+message SearchResponse {
+   repeated Result results = 1;
+}
+
+message Result {
+    string url = 1;
+    string title = 2;
+    repeated string snippets = 3;
+}
+```
+### 7.Message嵌套使用
+* 支持嵌套消息，消息可以包含另一个消息作为其字段，也可以在消息内定义一个新的消息
+* 内部声明的message类型名称只可在内部直接使用
+```
+message SearchResponse {
+    message Result {
+        string url = 1;
+        string title = 2;
+        repeated string snippets = 3;
+    }
+    repeated Result results = 1;
+}
+```
+* 还可以多层嵌套
+```
+message Outer {  //level 0
+    message MiddleAA {   //level 1
+        message Inner {      //level 2
+            int64 ival = 1;
+            bool booly = 2;
+        }
+    }
+    message MiddleBB {  //level 1
+        message Inner {    //level 2
+            int32 ival = 1;
+            bool booly = 2;
+        }
+    }
+}
+```
+### 8.proto3的Map类型
+* proto3支持map类型声明
+```
+map<key_type, value_type> map_field = N;
+
+message Project {...}
+map<string, Project> projects = 1;
+```
+* 键、值类型可以是内置的类型，也可以是自定义message类型
+* 字段不支持repeated属性
+### 9. .proto文件编译
+* 通过定义好的.proto文件生成Java、python、C++、Go、Ruby、Java Nano、Objective-C or C# 代码，需要安装编译器protoc
+* 当使用protocol buffer编译器运行.proto文件时，编译器将生成所选语言的代码，用于使用在.proto文件中定义的消息类型、服务接口约定等。不同语言生成的代码格式不同
+  * C++：每个.proto文件生成一个.h文件和一个.cc文件，每个消息类型对应一个类
+  * Java：生成.java文件，同样每个消息对应一个类，同时还有一个特殊的Builder类用于创建消息接口
+  * Python：每个.proto文件中的消息类型生成一个含有静态描述符的模块，该模块与一个元素metaclass在运行时创建需要的python数据访问类
+  * Go：生成一个.pb.go文件，每个消息类型对应一个结构体
+  * Ruby：生成一个.rb文件的Ruby模块，包含所有消息类型
+  * JavaNano：类似Java，但不包含Builder类
+  * Objective-C：每个.proto文件生成一个pbobjc.h和一个pbobjc.m文件
+  * C#：生成.cs文件，每个消息类型对应一个类
+### 10.import导入定义
+* 可以使用import语句导入使用其他描述文件中声明的类型
+* protobuf接口文件可以像C语言的h文件一样分离为多个，在需要时通过import导入所需的文件，其行为和C语言的#include或者Java的import行为大致相同，例如 import "others.proto";
+* protocol buffer编译器会在-I/--proto_path 参数指定的目录中查找导入的文件，如果没有指定该参数，默认在当前目录中查找
+### 11.包的使用
+* 在.proto文件中使用package声明包名，避免命名冲突
+```
+syntax = "proto3";
+package foo.bar;
+message Open {...}
+```
+* 在其他的消息格式定义中可以使用包名 + 消息名的方式来使用类型
+```
+message Foo {
+    ...
+    foo.bar.Open open = 1;
+    ...
+}
+```
+* 在不同的语言中，包名定义对编译后生成的代码影响不同
+  * C++中，对应C++命名空间，例如Open会在命名空间foo::bar中
+  * Java中，package会作为Java包名，除非指定了option java_package选项
+  * python中，package被忽略
+  * Go中，默认使用package名作为包名，除非指定了option go_package选项
+  * JavaNano中，同Java
+  * C#中，package会转换为驼峰式命名空间，如Foo.Bar，除非指定了option csharp_namespace选项
+## 使用gRPC构建微服务
+* 代码实现查询，客户端向服务端查询用户信息
+### 1.编写proto文件
+
+### 2.生成go文件
+* gland中打开命令行，输入命令生成接口文件：`protoc -I . --go_out=plugins=grpc:./user.proto`
+### 3.编写服务端
+
+### 4.编写客户端
+
