@@ -128,3 +128,10 @@ type Service interface {
   String() string
 }
 ```
+## 6.go-micro安装
+* 查看网址：https://github.com/micro/go-micro
+* cmd中输入如下3条命名，自动下载关联包
+  * go get github.com/micro/micro
+  * go get github.com/micro/go-micro
+  * go get github.com/micro/protoc-gen-micro
+
