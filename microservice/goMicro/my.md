@@ -134,4 +134,5 @@ type Service interface {
   * go get github.com/micro/micro
   * go get github.com/micro/go-micro
   * go get github.com/micro/protoc-gen-micro
+* go install github.com/micro/protoc-gen-micro
 
