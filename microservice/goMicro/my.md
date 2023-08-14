@@ -135,4 +135,8 @@ type Service interface {
   * go get github.com/micro/go-micro
   * go get github.com/micro/protoc-gen-micro  
 * 安装go-micro：go install github.com/micro/protoc-gen-micro
+* 安装micro.exe:
+  * git clone https://github.com/go-micro/cli.git
+  * cd cmd/go-micro
+  * go build -o micro.exe
 
