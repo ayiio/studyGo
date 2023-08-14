@@ -133,6 +133,6 @@ type Service interface {
 * cmd中输入如下3条命名，自动下载关联包
   * go get github.com/micro/micro
   * go get github.com/micro/go-micro
-  * go get github.com/micro/protoc-gen-micro
-* go install github.com/micro/protoc-gen-micro
+  * go get github.com/micro/protoc-gen-micro  
+* 安装go-micro：go install github.com/micro/protoc-gen-micro
 
