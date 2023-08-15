@@ -139,4 +139,4 @@ type Service interface {
   * git clone https://github.com/go-micro/cli.git
   * cd cmd/go-micro
   * go build -o micro.exe
-
+ 
